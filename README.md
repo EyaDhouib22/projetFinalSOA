@@ -1,4 +1,4 @@
-# Projet : 
+# Projet : Real-time Text Analysis with LLM
 
 ## 1. Introduction
 Ce projet met en œuvre une application basée sur une architecture microservices pour l'analyse de contenu textuel. Il permet aux utilisateurs de soumettre du texte afin d'obtenir une analyse de sentiment et des suggestions de mots-clés pertinentes. L'historique de ces analyses est également conservé et consultable.
