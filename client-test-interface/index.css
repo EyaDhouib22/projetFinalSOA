@@ -1,0 +1,187 @@
+:root {
+            --primary-color: #4079b7;
+            --primary-hover-color: #0056b3;
+            --secondary-color: #6c757d;
+            --success-color: #1c9438;
+            --danger-color: #bb2534;
+            --warning-color: #ecc46f;
+            --info-color: #17a2b8;
+            --light-color: #f8f9fa;
+            --dark-color: #343a40;
+            --neutral-color: #6c757d;
+            --very-positive-color: #1e7e34;
+            --very-negative-color: #a71d2a;
+            --border-color: #dee2e6;
+            --text-color: #212529;
+            --bg-color: #f4f4f8;
+            --card-bg-color: #ffffff;
+            --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+
+        body {
+            font-family: var(--font-family);
+            margin: 0;
+            padding: 20px;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 25px;
+            background-color: var(--card-bg-color);
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 2em;
+        }
+
+        .status-bar {
+            padding: 10px 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: 500;
+        }
+        .status-bar.connected { background-color: var(--success-color); color: white; }
+        .status-bar.disconnected { background-color: var(--danger-color); color: white; }
+        .status-bar.connecting { background-color: var(--warning-color); color: var(--dark-color); }
+        .status-bar.message { background-color: var(--info-color); color: white; }
+
+
+        .section {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+        .section h2 {
+            color: var(--dark-color);
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: var(--secondary-color);
+        }
+
+        textarea, input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 1em;
+        }
+        textarea { min-height: 100px; resize: vertical; }
+
+        button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: var(--primary-color);
+            color: white;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 500;
+            transition: background-color 0.2s ease-in-out;
+        }
+        button:hover:not(:disabled) {
+            background-color: var(--primary-hover-color);
+        }
+        button:disabled {
+            background-color: var(--secondary-color);
+            cursor: not-allowed;
+        }
+
+        .controls-group {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        .controls-group label { margin-bottom: 0; }
+        .controls-group input[type="text"], .controls-group input[type="number"] {
+            margin-bottom: 0;
+            flex-grow: 1;
+        }
+        .controls-group input[type="number"] { max-width: 80px; }
+
+
+        .result-area {
+            margin-top: 15px;
+            padding: 15px;
+            border: 1px solid var(--border-color);
+            background-color: var(--light-color);
+            border-radius: 5px;
+            min-height: 50px;
+        }
+        .result-area p { margin: 0 0 8px 0; }
+        .result-area strong { color: var(--dark-color); }
+
+        .sentiment { font-weight: bold; padding: 3px 8px; border-radius: 4px; color: white; }
+        .sentiment-VERY_POSITIVE { background-color: var(--very-positive-color); }
+        .sentiment-POSITIVE { background-color: var(--success-color); }
+        .sentiment-NEUTRAL { background-color: var(--neutral-color); }
+        .sentiment-NEGATIVE { background-color: var(--danger-color); }
+        .sentiment-VERY_NEGATIVE { background-color: var(--very-negative-color); }
+
+        .keywords-list {
+            list-style: none;
+            padding: 0;
+            margin-top: 8px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .keywords-list li {
+            background-color: var(--info-color);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.9em;
+        }
+
+        .history-entry {
+            background-color: var(--card-bg-color);
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid #e0e0e0;
+        }
+        .history-entry p { font-size: 0.95em; }
+        .history-entry .original-text {
+            font-style: italic;
+            color: #555;
+            margin-bottom: 10px;
+            padding-left: 10px;
+            border-left: 3px solid var(--primary-color);
+        }
+        .history-entry .meta {
+            font-size: 0.8em;
+            color: var(--secondary-color);
+        }
+         .error-message {
+            color: var(--danger-color);
+            font-weight: bold;
+            padding: 10px;
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            border-radius: 5px;
+            margin-top: 10px;
+        }

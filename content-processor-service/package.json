@@ -17,8 +17,10 @@
   "license": "ISC",
   "dependencies": {
     "@grpc/grpc-js": "^1.9.0",
-    "@grpc/proto-loader": "^0.7.9"
-    
+    "@grpc/proto-loader": "^0.7.9",
+    "dotenv": "^16.5.0",
+    "node-fetch": "^2.7.0",
+    "readline-sync": "^1.4.10"
   },
   "devDependencies": {
     "nodemon": "^3.0.1"
