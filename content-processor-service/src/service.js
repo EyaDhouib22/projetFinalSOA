@@ -4,7 +4,7 @@ require('dotenv').config(); // Load environment variables from .env file
 const fetch = require('node-fetch'); // Make sure to install: npm install node-fetch@2
 
 // --- OpenRouter API Configuration ---
-const OPENROUTER_API_KEY = "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";
+const OPENROUTER_API_KEY = "sk-or-v1-xxxxxxxx";
 YOUR_SITE_URL="http://localhost:8080";
 YOUR_SITE_NAME="MyLocalContentService" ;
 
