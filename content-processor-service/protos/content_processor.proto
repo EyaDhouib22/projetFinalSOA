@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package content_processor;
+
+service ContentProcessorService {
+  rpc ProcessText (ProcessTextRequest) returns (ProcessTextResponse);
+}
+
+message ProcessTextRequest {
+  string text_id = 1; 
+  string text = 2;
+}
+
+message ProcessTextResponse {
+  string text_id = 1;
+  string sentiment = 2; // e.g., "POSITIVE", "NEGATIVE", "NEUTRAL", "MIXED"
+  repeated string suggested_keywords = 3;
+  string error_message = 4;
+}

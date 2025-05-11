@@ -1,0 +1,50 @@
+syntax = "proto3";
+
+package history;
+
+import "google/protobuf/timestamp.proto"; // Pour utiliser le type Timestamp
+
+service HistoryService {
+  rpc StoreEntry (StoreEntryRequest) returns (StoreEntryResponse);
+  rpc GetHistory (GetHistoryRequest) returns (GetHistoryResponse);
+  rpc GetEntryById (GetEntryByIdRequest) returns (Entry); // Permet de récupérer une entrée spécifique
+}
+
+message Entry {
+  string id = 1; // L'ID unique de cette entrée d'historique (généré par HistoryService)
+  string original_text_id = 2; // Référence à l'ID du texte original
+  string original_text = 3;
+  string sentiment = 4;
+  repeated string suggested_keywords = 5;
+  google.protobuf.Timestamp processed_at = 6;
+  string user_id = 7; // Optionnel, pour identifier l'utilisateur
+}
+
+message StoreEntryRequest {
+  string original_text_id = 1;
+  string original_text = 2;
+  string sentiment = 3;
+  repeated string suggested_keywords = 4;
+  string user_id = 5; // Optionnel
+}
+
+message StoreEntryResponse {
+  string entry_id = 1; // L'ID de l'entrée stockée
+  bool success = 2;
+  string error_message = 3;
+}
+
+message GetHistoryRequest {
+  int32 limit = 1; // Nombre max d'entrées à retourner
+  int32 offset = 2; // Pour la pagination
+  string user_id = 3; // Optionnel, pour filtrer par utilisateur
+}
+
+message GetHistoryResponse {
+  repeated Entry entries = 1;
+  int32 total_count = 2; // Nombre total d'entrées correspondant aux critères (utile pour la pagination)
+}
+
+message GetEntryByIdRequest {
+  string entry_id = 1;
+}

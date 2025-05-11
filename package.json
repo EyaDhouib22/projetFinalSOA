@@ -1,0 +1,27 @@
+{
+  "name": "projetfinalsoa",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start:content-processor": "node content-processor-service/src/index.js",
+    "start:history": "node history-service/src/index.js",
+    "start:gateway": "node api-gateway/src/index.js",
+    "dev:content-processor": "nodemon content-processor-service/src/index.js",
+    "dev:history": "nodemon history-service/src/index.js",
+    "dev:gateway": "nodemon api-gateway/src/index.js",
+    "start-all": "concurrently \"npm:start:content-processor\" \"npm:start:history\" \"npm:start:gateway\"",
+    "dev-all": "concurrently \"npm:dev:content-processor\" \"npm:dev:history\" \"npm:dev:gateway\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^8.2.0",
+    "nodemon": "^3.0.1"
+  },
+  "dependencies": {
+    "axios": "^1.9.0",
+    "dotenv": "^16.5.0"
+  }
+}

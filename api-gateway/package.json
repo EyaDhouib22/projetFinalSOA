@@ -1,0 +1,38 @@
+{
+  "name": "api-gateway",
+  "version": "1.0.0",
+  "description": "API Gateway exposant REST, GraphQL et WebSockets",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "api-gateway",
+    "rest",
+    "graphql",
+    "websockets",
+    "express",
+    "apollo"
+  ],
+  "author": "Votre Nom/Pseudo",
+  "license": "ISC",
+  "dependencies": {
+    "@apollo/server": "^4.9.5",          
+    "@grpc/grpc-js": "^1.9.0",
+    "@grpc/proto-loader": "^0.7.9",
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "google-proto-files": "^4.0.0",     
+    "graphql": "^16.8.1",               
+    "graphql-tag": "^2.12.6",           
+    "http": "^0.0.1-security",          
+    "uuid": "^9.0.1",                   
+    "ws": "^8.14.2"                     
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}

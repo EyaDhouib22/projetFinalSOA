@@ -1,0 +1,26 @@
+{
+  "name": "content-processor-service",
+  "version": "1.0.0",
+  "description": "Microservice pour l'analyse de contenu (sentiment, mots-clés)",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "grpc",
+    "content",
+    "analysis"
+  ],
+  "author": "Votre Nom/Pseudo",
+  "license": "ISC",
+  "dependencies": {
+    "@grpc/grpc-js": "^1.9.0",
+    "@grpc/proto-loader": "^0.7.9"
+    
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}

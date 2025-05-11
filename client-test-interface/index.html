@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Content Improver Client</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background-color: #f4f4f4; }
+        .container { background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        h1, h2 { color: #333; }
+        textarea, input[type="text"], input[type="number"] { width: calc(100% - 22px); padding: 10px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 4px; }
+        button { padding: 10px 15px; border: none; border-radius: 4px; background-color: #007bff; color: white; cursor: pointer; margin-right: 5px; }
+        button:hover { background-color: #0056b3; }
+        #responseArea, #historyArea { margin-top: 15px; padding: 10px; border: 1px solid #eee; background-color: #f9f9f9; border-radius: 4px; white-space: pre-wrap; word-wrap: break-word; max-height: 300px; overflow-y: auto;}
+        .controls-group { display: flex; gap: 10px; align-items: center; margin-bottom: 10px; }
+        .status { margin-top: 10px; font-style: italic; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Content Improver Test Client (WebSocket)</h1>
+        <div id="status" class="status">Connecting to WebSocket...</div>
+
+        <h2>Submit Text for Processing</h2>
+        <textarea id="textInput" rows="4" placeholder="Enter your text here..."></textarea>
+        <input type="text" id="userIdInput" placeholder="User ID (optional)">
+        <button id="submitButton">Submit via WebSocket</button>
+        
+        <h2>Response</h2>
+        <div id="responseArea">No response yet.</div>
+
+        <h2>Get History</h2>
+        <div class="controls-group">
+            <input type="text" id="historyUserIdInput" placeholder="User ID (optional, for filtering)">
+            <label for="historyLimitInput">Limit:</label>
+            <input type="number" id="historyLimitInput" value="5" min="1" style="width: 60px;">
+            <button id="getHistoryButton">Get History via WebSocket</button>
+        </div>
+        <div id="historyArea">No history fetched yet.</div>
+    </div>
+
+    <script>
+        const textInput = document.getElementById('textInput');
+        const userIdInput = document.getElementById('userIdInput');
+        const submitButton = document.getElementById('submitButton');
+        const responseArea = document.getElementById('responseArea');
+        
+        const historyUserIdInput = document.getElementById('historyUserIdInput');
+        const historyLimitInput = document.getElementById('historyLimitInput');
+        const getHistoryButton = document.getElementById('getHistoryButton');
+        const historyArea = document.getElementById('historyArea');
+        const statusDiv = document.getElementById('status');
+
+        const socket = new WebSocket('ws://localhost:8080'); // API Gateway WebSocket
+
+        function displayInArea(areaElement, data) {
+            areaElement.textContent = JSON.stringify(data, null, 2);
+        }
+
+        socket.onopen = () => {
+            statusDiv.textContent = 'Connected to WebSocket Server!';
+            statusDiv.style.color = 'green';
+            console.log('WebSocket connection established.');
+        };
+
+        socket.onmessage = (event) => {
+            console.log('Message from server:', event.data);
+            statusDiv.textContent = 'Message received from server.';
+            try {
+                const data = JSON.parse(event.data);
+                if (data.type === 'submitTextResponse') {
+                    displayInArea(responseArea, data.payload || { error: data.error, details: data.details, text_id: data.text_id });
+                } else if (data.type === 'historyResponse') {
+                    displayInArea(historyArea, data.payload || { error: data.error, details: data.details });
+                } else if (data.error) {
+                     displayInArea(responseArea, data); // Display generic errors in response area
+                } else {
+                    console.warn('Unknown message type from server:', data);
+                    displayInArea(responseArea, { warning: "Unknown message type", data: data });
+                }
+            } catch (e) {
+                console.error("Failed to parse server message:", e);
+                displayInArea(responseArea, { error: "Malformed message from server", rawData: event.data });
+            }
+        };
+
+        socket.onerror = (error) => {
+            statusDiv.textContent = 'WebSocket Error. Check console.';
+            statusDiv.style.color = 'red';
+            console.error('WebSocket Error:', error);
+            displayInArea(responseArea, { error: "WebSocket connection error. Is the API Gateway running?"});
+        };
+
+        socket.onclose = (event) => {
+            statusDiv.textContent = `WebSocket Disconnected: ${event.reason || 'Connection closed'}`;
+            statusDiv.style.color = 'red';
+            console.log('WebSocket connection closed:', event);
+            submitButton.disabled = true;
+            getHistoryButton.disabled = true;
+        };
+
+        submitButton.addEventListener('click', () => {
+            const text = textInput.value.trim();
+            const userId = userIdInput.value.trim();
+            if (!text) {
+                alert("Please enter some text.");
+                return;
+            }
+            if (socket.readyState === WebSocket.OPEN) {
+                const message = {
+                    type: 'submitText',
+                    payload: {
+                        text: text,
+                        user_id: userId || undefined // Send undefined if empty, so it's not an empty string
+                    }
+                };
+                socket.send(JSON.stringify(message));
+                displayInArea(responseArea, { status: "Submission sent...", request: message });
+            } else {
+                displayInArea(responseArea, { error: "Cannot send. WebSocket is not open." });
+            }
+        });
+
+        getHistoryButton.addEventListener('click', () => {
+            if (socket.readyState === WebSocket.OPEN) {
+                const userId = historyUserIdInput.value.trim();
+                const limit = parseInt(historyLimitInput.value, 10) || 5;
+                const message = {
+                    type: 'getHistory',
+                    payload: {
+                        limit: limit,
+                        user_id: userId || undefined
+                    }
+                };
+                socket.send(JSON.stringify(message));
+                displayInArea(historyArea, { status: "History request sent...", request: message });
+            } else {
+                displayInArea(historyArea, { error: "Cannot request history. WebSocket is not open." });
+            }
+        });
+    </script>
+</body>
+</html>

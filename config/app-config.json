@@ -1,0 +1,17 @@
+{
+  "apiGateway": {
+    "port": 8080,
+    "restBasePath": "/api"
+  },
+  "contentProcessorService": {
+    "host": "localhost",
+    "port": 50051
+  },
+  "historyService": {
+    "host": "localhost",
+    "port": 50052
+  },
+  "mongoDB": {
+    "uri": "mongodb://localhost:27017/contentImproverDB"
+  }
+}
