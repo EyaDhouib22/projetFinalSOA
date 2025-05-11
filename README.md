@@ -123,13 +123,13 @@ L'application est conçue autour d'une architecture microservices robuste, visan
 *   **Schéma de Données MongoDB (Collection `history_entries`) :**
     ```json
     {
-      "_id": "UUID généré par le service", // string
-      "original_text_id": "string",       // ID du texte soumis (reçu de la gateway)
+      "_id": "UUID généré par le service", 
+      "original_text_id": "string",       
       "original_text": "string",
-      "sentiment": "string",              // ex: "VERY_POSITIVE", "NEUTRAL"
+      "sentiment": "string",              
       "suggested_keywords": ["string"],
       "user_id": "string" (optionnel),
-      "processed_at": ISODate             // Timestamp de stockage
+      "processed_at": ISODate            
     }
     ```
 *   **Interactions Externes :**
@@ -178,41 +178,55 @@ Queries : `getProcessedTextHistory`, `getHistoryEntry`.
     npm run dev:history
     npm run dev:gateway
     ```
-
 ## 7. Guide de Test
-A. Tester l'Endpoint REST
-1. Soumettre un Texte pour Analyse (POST)
-L'API Gateway reçoit une requête REST. Elle appelle le content-processor-service via gRPC pour analyser le texte, puis appelle le history-service via gRPC pour stocker le résultat. Elle retourne ensuite le résultat de l'analyse et l'ID de l'entrée d'historique.
-Endpoint : POST http://localhost:8080/api/submit
-Headers :
-Content-Type: application/json
-Body (raw JSON) :
-    {
-      "text": "C'est un excellent produit, je suis très satisfait !",
-      "user_id": "userTest123"
-    }
-2. Obtenir l'Historique des Analyses (GET)
-L'API Gateway reçoit la requête REST et appelle le history-service via gRPC pour récupérer les entrées d'historique.
-Endpoint : GET http://localhost:8080/api/history
-                http://localhost:8080/api/history?limit=3&user_id=userTest123
 
-3. Obtenir une Entrée d'Historique Spécifique par ID (GET)
-L'API Gateway appelle le history-service via gRPC pour récupérer une entrée spécifique.
-Endpoint : GET http://localhost:8080/api/history/{history_entry_id}
+### A. Tester l'Endpoint REST
+#### 1. Soumettre un Texte pour Analyse (POST)
+L'API Gateway reçoit une requête REST. Elle appelle le `content-processor-service` via gRPC pour analyser le texte, puis appelle le `history-service` via gRPC pour stocker le résultat. Elle retourne ensuite le résultat de l'analyse et l'ID de l'entrée d'historique.
+
+**Endpoint :**
+`POST http://localhost:8080/api/submit`
+
+**Headers :**
+- `Content-Type: application/json`
+
+**Body (raw JSON) :**
+json
+   {
+     "text": "C'est un excellent produit, je suis très satisfait !",
+     "user_id": "userTest123"
+   }
 
 
-B. Tester l'Endpoint GraphQL
-1. Mutation pour Soumettre un Texte
-Similaire à l'endpoint REST /submit, mais via GraphQL. Le résolveur GraphQL dans l'API Gateway orchestre les appels gRPC aux microservices.
-Endpoint : POST http://localhost:8080/graphql
-Body (GraphQL Query) :
-    mutation SubmitMyText {
-      submitText(text: "GraphQL est une manière flexible de requêter des données.", user_id: "gqlUser001") {
-        text_id
-        sentiment
-        suggested_keywords
-        history_entry_id
-        error_message
+#### 2. Obtenir l'Historique des Analyses (GET)
+L'API Gateway reçoit la requête REST et appelle le `history-service` via gRPC pour récupérer les entrées d'historique.
+**Endpoints :**
+- GET http://localhost:8080/api/history  
+- GET http://localhost:8080/api/history?limit=3&user_id=userTest123
+
+
+#### 3. Obtenir une Entrée d'Historique Spécifique par ID (GET)
+L'API Gateway appelle le `history-service` via gRPC pour récupérer une entrée spécifique.
+**Endpoint :**  
+GET http://localhost:8080/api/history/{history_entry_id}
+
+
+### B. Tester l'Endpoint GraphQL
+#### 1. Mutation pour Soumettre un Texte
+Similaire à l'endpoint REST `/submit`, mais via GraphQL. Le résolveur GraphQL dans l'API Gateway orchestre les appels gRPC aux microservices.
+**Endpoint :**  
+POST http://localhost:8080/graphql
+
+**Body (GraphQL Query) :**
+      mutation SubmitMyText {
+      submitText(
+      text: "GraphQL est une manière flexible de requêter des données.",
+      user_id: "gqlUser001"
+      ) {
+      text_id
+      sentiment
+      suggested_keywords
+      history_entry_id
+      error_message
       }
-    }
-   
+      }
